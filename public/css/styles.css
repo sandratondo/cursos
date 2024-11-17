@@ -1,0 +1,101 @@
+#main-content-box-comments {
+    display: none; /* Ocultar el formulario inicialmente */
+}
+/* Estilo para las notificaciones */
+.error-box {
+    background-color: #f8d7da;
+    color: #b20000;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.success-box {
+    background-color: #d4edda;
+    color: green;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.warning-box {
+    background-color: #fff3cd;
+    color: #a36900;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+#notification {
+    display: none;
+
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Sombra para visibilidad */
+}
+
+#dropzone {
+    text-align: center;
+    padding: 20px;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    display: none; /* Inicialmente oculto */
+}
+
+#dropzone.dragover {
+    border-color: #333;
+    background-color: #f0f0f0;
+}
+
+#image-preview {
+    margin-top: 10px;
+}
+
+.light-hover:hover{
+    opacity:0.95;
+}
+
+/*comments*/
+
+.comment {
+    margin: 1rem 0rem;
+    padding: 1rem;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+}
+
+.reply {
+    margin-left: 2rem;
+    padding: 0.5rem;
+    background-color: #d0eaff;
+    border-radius: 8px;
+}
+
+.comment-bubble {
+    position: relative; /* Necesario para posicionar el pseudo-elemento */
+    padding: 16px;
+    background-color: #f0f9ff; /* Cambia el color según tu preferencia */
+    border-radius: 8px;
+}
+
+.comment-bubble::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: -20px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent #dbeafe transparent transparent;
+}
+/*watermark video*/
+.watermark {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 5px;
+    background-color: rgba(255, 255, 255, 0.5);
+    height:fit-content;
+    width: fit-content;
+    color: #ccc;
+    font-size: 14px;
+    border-radius: 3px;
+    pointer-events: none; /* Esto asegura que la marca de agua no interfiera con los controles del video */
+}
