@@ -41,15 +41,19 @@ class CommentController extends Controller
 
     public function getComments(Request $request, $lessonId) 
     {
-        //obtine comentarios de la lección
+        // Obtiene los comentarios de la lección
         $query = Comment::where('lesson_id', $lessonId)
-        ->with('user', 'replies') // Obtener el usuario y las respuestas
-        ->orderBy('created_at', 'desc'); // Ordenar por fecha de creación
-
-        $comments = $this->paginateQuery($query, $request); // obtener solo los comentarios de una página
+            ->whereNull('parent_id') // Solo comentarios padres
+            ->with(['user', 'replies.user']) // Obtener el usuario y las respuestas con el usuario
+            ->orderBy('created_at', 'desc'); // Ordenar por fecha de creación
+        
+        $comments = $this->paginateQuery($query, $request); // Obtener solo los comentarios de una página
 
         $comments->getCollection()->transform(function ($comment) {
             $comment->created_at_formatted = $comment->created_at->format('d-m-Y H:i');
+            foreach ($comment->replies as $reply) {
+                $reply->created_at_formatted = $reply->created_at->format('d-m-Y H:i');
+            }
             return $comment;
         });
 

@@ -99,3 +99,28 @@
     border-radius: 3px;
     pointer-events: none; /* Esto asegura que la marca de agua no interfiera con los controles del video */
 }
+
+
+
+
+.comment-bubble {
+    background-color: #e0f7fa;
+    padding: 1rem;
+    border-radius: 0.5rem;
+  }
+  
+  .comment-reply {
+    background-color: #f1f8e9;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    margin-left: 2rem;
+  }
+  
+  .profile-pic img {
+    border-radius: 50%;
+  }
+  
+  .comment-reply .profile-pic img {
+    width: 2rem;
+    height: 2rem;
+  }
