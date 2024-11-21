@@ -79,6 +79,7 @@ Route::middleware(['auth'])->group(function () {
 //lessons
 Route::middleware(['auth'])->group(function () {
     Route::get('/courses/{course}/lessons', [CourseController::class, 'showLessons'])->name('courses.lessons');
+    Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('courses.showCourse');
 });
 
 //comments

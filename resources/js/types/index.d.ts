@@ -19,6 +19,28 @@ export interface Course {
     image_url?: string; // Agregar esta línea
 }
 
+export interface Lesson {
+    id: number; // bigint(20), UNSIGNED
+    course_id: number; // bigint(20), UNSIGNED
+    title: string; // varchar(255)
+    description?: string | null; // text, NULL permitido
+    order: number; // int(11), valor predeterminado 0
+    video_blob?: Blob | null; // blob, NULL permitido
+    created_at?: string | null; // timestamp, NULL permitido
+    updated_at?: string | null; // timestamp, NULL permitido
+}
+
+
+export interface Enrollment {
+    id: number; // bigint(20), UNSIGNED
+    user_id: number; // bigint(20), UNSIGNED
+    course_id: number; // bigint(20), UNSIGNED
+    enrollment_date: string; // timestamp, valor predeterminado: current_timestamp()
+    status: 'in_progress' | 'completed' | 'expired'; // enum, valores posibles
+    created_at?: string | null; // timestamp, NULL permitido
+    updated_at?: string | null; // timestamp, NULL permitido
+}
+
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     auth: {

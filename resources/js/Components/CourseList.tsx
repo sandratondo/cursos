@@ -18,7 +18,7 @@ export default function CourseList({ courses }: CourseListProps) {
                             <h5 className="card-title">{course.title}</h5>
                             <p className="card-text">{course.description}</p>
                             <p className="card-text">{course.is_free ? 'Gratis' : '$' + course.price}</p>
-                            <a href="#" className="btn btn-primary">Ver más</a>
+                            <a href={`/courses/${course.id}`} className="btn btn-primary">Ver más</a>
                         </div>
                     </div>
                 </div>
