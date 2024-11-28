@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ContactController;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Controllers\VideoController;
 use Illuminate\Foundation\Application;
@@ -84,12 +85,15 @@ Route::middleware(['auth'])->group(function () {
 
 //comments
 Route::middleware(['auth'])->group(function () {
+    Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
     Route::post('/comments/store', [CommentController::class, 'store'])->name('comments.store');
     Route::post('/comments/reply/{commentId}', [CommentController::class, 'reply']);
     Route::post('/comments', [CommentController::class, 'store']);
     Route::get('/comments/{lessonId}', [CommentController::class, 'getComments']);
     
     Route::get('/video/{videoName}', [VideoController::class, 'stream'])->name('video.stream');
+
+    
 
 });
 

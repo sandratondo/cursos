@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Head } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Course, Lesson, User } from '@/types';
-
+import ContactUs from '@/Components/ContactUs';
 interface CoursePageProps {
     course: Course & { lessons: Lesson[] };
     isEnrolled: boolean;
@@ -80,19 +80,8 @@ export default function CoursesLanding({ course, isEnrolled, user }: CoursePageP
 
                                         {/* Formulario de Dudas */}
                         <section id="dudas" className={`mt-8 section-container ${activeSection === 'dudas' ? 'block' : 'hidden'}`}>
-                            <h2 className="text-xl font-semibold">¿Tienes dudas?</h2>
-                            <form className="space-y-4">
-                                <textarea
-                                    className="w-full border rounded-lg p-4 text-lg text-gray-700"
-                                    placeholder="Escribe tu duda aquí..."
-                                ></textarea>
-                                <button
-                                    type="submit"
-                                    className="btn-primary w-full py-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition duration-300"
-                                >
-                                    Enviar
-                                </button>
-                            </form>
+                            <h2 className="text-xl font-semibold">Contacta con nosotros</h2>
+                                <ContactUs />
                         </section>
                     </div>
 
