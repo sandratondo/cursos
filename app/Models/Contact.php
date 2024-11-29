@@ -14,6 +14,8 @@ class Contact extends Model
         'name',
         'email',
         'message',
+        'course_id',
+        'user_id',
     ];
 
     // Si es necesario, puedes definir qué campos no son asignables masivamente.

@@ -1,30 +1,36 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { showNotification } from '../app';
+import { User, Course } from '../types';
 
-const ContactUs = () => {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
+interface ContactUsProps {
+    user: User;
+    courses: Course[];
+}
+
+const ContactUs: React.FC<ContactUsProps> = ({ user, courses }) => {
+    const [name, setName] = useState(user ? user.name : '');
+    const [email, setEmail] = useState(user ? user.email : '');
     const [message, setMessage] = useState('');
+    const [courseId, setCourseId] = useState('');
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         try {
-            // Realizar la solicitud POST
             await axios.post('/contact', {
                 name,
                 email,
                 message,
+                course_id: courseId,
             });
 
-            // Si la solicitud es exitosa, limpiar el formulario y mostrar notificación de éxito
             showNotification('success', 'Comentario enviado con éxito');
-            setName('');
-            setEmail('');
+            setName(user ? user.name : '');
+            setEmail(user ? user.email : '');
             setMessage('');
+            setCourseId('');
         } catch (err) {
-            // Mostrar notificación de error si la solicitud falla
             showNotification('error', 'Error enviando el comentario');
             console.error(err);
         }
@@ -50,6 +56,17 @@ const ContactUs = () => {
                     placeholder="Tu correo electrónico"
                     className="w-full border rounded-lg p-4"
                 />
+                <select
+                    name="course_id"
+                    value={courseId}
+                    onChange={(e) => setCourseId(e.target.value)}
+                    className="w-full border rounded-lg p-4"
+                >
+                    <option value="">Selecciona un curso</option>
+                    {courses.map(course => (
+                        <option key={course.id} value={course.id}>{course.title}</option>
+                    ))}
+                </select>
                 <textarea
                     name="message"
                     value={message}

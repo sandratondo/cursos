@@ -15,6 +15,7 @@ class ContactController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'message' => 'required|string',
+            'course_id' => 'nullable|exists:courses,id',
         ]);
 
         // Crear un nuevo registro en la base de datos
@@ -22,6 +23,8 @@ class ContactController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'message' => $request->message,
+            'course_id' => $request->course_id,
+            'user_id' => auth()->id(), // Obtener el ID del usuario autenticado
         ]);
 
         // Responder con un mensaje de éxito

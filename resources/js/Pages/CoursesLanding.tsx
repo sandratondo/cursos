@@ -81,7 +81,7 @@ export default function CoursesLanding({ course, isEnrolled, user }: CoursePageP
                                         {/* Formulario de Dudas */}
                         <section id="dudas" className={`mt-8 section-container ${activeSection === 'dudas' ? 'block' : 'hidden'}`}>
                             <h2 className="text-xl font-semibold">Contacta con nosotros</h2>
-                                <ContactUs />
+                                <ContactUs user={user} courses={[course]}/>
                         </section>
                     </div>
 
