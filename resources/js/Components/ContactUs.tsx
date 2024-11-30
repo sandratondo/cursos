@@ -4,11 +4,11 @@ import { showNotification } from '../app';
 import { User, Course } from '../types';
 
 interface ContactUsProps {
-    user: User;
-    courses: Course[];
+    user?: User;
+    courses?: Course[];
 }
 
-const ContactUs: React.FC<ContactUsProps> = ({ user, courses }) => {
+const ContactUs: React.FC<ContactUsProps> = ({ user, courses = [] }) => {
     const [name, setName] = useState(user ? user.name : '');
     const [email, setEmail] = useState(user ? user.email : '');
     const [message, setMessage] = useState('');
@@ -56,17 +56,19 @@ const ContactUs: React.FC<ContactUsProps> = ({ user, courses }) => {
                     placeholder="Tu correo electrónico"
                     className="w-full border rounded-lg p-4"
                 />
-                <select
-                    name="course_id"
-                    value={courseId}
-                    onChange={(e) => setCourseId(e.target.value)}
-                    className="w-full border rounded-lg p-4"
-                >
-                    <option value="">Selecciona un curso</option>
-                    {courses.map(course => (
-                        <option key={course.id} value={course.id}>{course.title}</option>
-                    ))}
-                </select>
+                {courses.length > 0 && (
+                    <select
+                        name="course_id"
+                        value={courseId}
+                        onChange={(e) => setCourseId(e.target.value)}
+                        className="w-full border rounded-lg p-4"
+                    >
+                        <option value="">Selecciona un curso</option>
+                        {courses.map(course => (
+                            <option key={course.id} value={course.id}>{course.title}</option>
+                        ))}
+                    </select>
+                )}
                 <textarea
                     name="message"
                     value={message}
