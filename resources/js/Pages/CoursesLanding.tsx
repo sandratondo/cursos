@@ -62,9 +62,15 @@ export default function CoursesLanding({ course, isEnrolled, user }: CoursePageP
                         <section id="intro" className={`section-container ${activeSection === 'intro' ? 'block' : 'hidden'}`}>
                             <h2 className="text-xl font-semibold">¿Qué aprenderás?</h2>
                             <ul className="list-disc ml-5 space-y-2">
-                                <li>Plataformas de Inversión: TradeStation y TradingView</li>
-                                <li>Introducción al Stock Market</li>
-                                <li>Análisis Fundamental</li>
+                            {course.objetivo ? (
+                                <ul className="list-disc ml-5 space-y-2">
+                                    {JSON.parse(course.objetivo).map((obj: string, index: number) => (
+                                        <li key={index}>{obj}</li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p>No hay objetivos disponibles.</p>
+                            )}
                             </ul>
                         </section>
 
@@ -111,7 +117,7 @@ export default function CoursesLanding({ course, isEnrolled, user }: CoursePageP
 
                         <div className="p-4 bg-white border rounded-lg shadow-md">
                             <p className="font-semibold">Duración:</p>
-                            <p>80 horas</p>
+                            <p>{course.duracion}</p>
                             <p className="font-semibold">Módulos:</p>
                             <p>{course.lessons.length} Módulos</p>
                         </div>

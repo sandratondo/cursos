@@ -15,7 +15,7 @@ const ContactUs: React.FC<ContactUsProps> = ({ user, courses = [] }) => {
     const [courseId, setCourseId] = useState('');
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+        e.preventDefault(); // prevents the default form submission behavior (reloading the page).
 
         try {
             await axios.post('/contact', {

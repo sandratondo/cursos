@@ -16,7 +16,9 @@ export interface Course {
     created_at: string;
     updated_at: string;
     user_id: number; // Asegúrate de incluir user_id si es necesario
-    image_url?: string; // Agregar esta línea
+    image_url?: string; 
+    objetivo: string; 
+    duracion: number | null;
 }
 
 export interface Lesson {

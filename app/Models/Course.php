@@ -16,7 +16,10 @@ class Course extends Model
         'price',
         'expires_at',
         'video_blob',
-        'user_id'
+        'user_id',
+        'image_url',
+        'objetivo',
+        'duracion',
     ];
 
     public function lessons()
