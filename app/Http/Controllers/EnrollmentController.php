@@ -11,15 +11,8 @@ class EnrollmentController extends Controller
 {
     public function index()
     {
-        /*
         // Obtener los cursos a los que el usuario está inscrito y pasarlos a la vista
-        $enrollments = auth()->user()->enrollments; // Ajustar según tu lógica de datos
-        return view('enrollments.index', compact('enrollments'));
-        
-        $user = Auth::user(); // Utiliza el facade Auth para obtener el usuario autenticado
-        $enrollments = $user->enrollments; // Ajustar según tu lógica de datos
-        return view('enrollments.index', compact('enrollments'));
-        */
+
         // Obtiene el usuario autenticado
         $user = Auth::user();
 
@@ -33,11 +26,11 @@ class EnrollmentController extends Controller
         ]);
        
     }
-    
+
     public function enroll(Request $request)
     {
         $user = Auth::user();
-        $courseId = $request->input('course_id');
+        $courseId = $request->input('course_id'); //Obtiene el ID del curso desde la solicitud.
 
         try {
             // Verificar si el usuario ya está inscrito en el curso
