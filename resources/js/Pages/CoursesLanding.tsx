@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Course, Lesson, User } from '@/types';
 import ContactUs from '@/Components/ContactUs';
+import axios from 'axios';
+import { showNotification } from '../app'; // Importa la función de notificación
+
 interface CoursePageProps {
     course: Course & { lessons: Lesson[] };
     isEnrolled: boolean;
@@ -11,10 +14,27 @@ interface CoursePageProps {
 
 export default function CoursesLanding({ course, isEnrolled, user }: CoursePageProps) {
     const [activeSection, setActiveSection] = useState<string>('intro');
+    const { props } = usePage();
 
-    const handleEnroll = () => {
-        //pasarela pagos aqui
-        console.log('Inscribirse al curso', course.id);
+    const handleEnroll = async () => {
+        if (course.price && course.price > 0) {
+            // Redirigir a la pasarela de pagos
+            console.log('Redirigiendo a la pasarela de pagos');
+            // Aquí puedes agregar la lógica para redirigir a la pasarela de pagos.
+            // window.location.href = '/payment-gateway-url';
+            showNotification('error', 'Redirigiendo a la pasarela de pagos no implementado.');
+        } else {
+            try {
+                await axios.post('/enroll', {
+                    course_id: course.id,
+                });
+                showNotification('success', 'Inscripción exitosa.'); // Mostrar notificación de éxito
+                window.location.href = `/courses/${course.id}/lessons`;
+            } catch (error) {
+                console.error('Error al inscribirse en el curso:', error);
+                showNotification('error', 'Error al inscribirse en el curso.'); // Mostrar notificación de error
+            }
+        }
     };
 
     const handleAccess = () => {
@@ -62,15 +82,15 @@ export default function CoursesLanding({ course, isEnrolled, user }: CoursePageP
                         <section id="intro" className={`section-container ${activeSection === 'intro' ? 'block' : 'hidden'}`}>
                             <h2 className="text-xl font-semibold">¿Qué aprenderás?</h2>
                             <ul className="list-disc ml-5 space-y-2">
-                            {course.objetivo ? (
-                                <ul className="list-disc ml-5 space-y-2">
-                                    {JSON.parse(course.objetivo).map((obj: string, index: number) => (
-                                        <li key={index}>{obj}</li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <p>No hay objetivos disponibles.</p>
-                            )}
+                                {course.objetivo ? (
+                                    <ul className="list-disc ml-5 space-y-2">
+                                        {JSON.parse(course.objetivo).map((obj: string, index: number) => (
+                                            <li key={index}>{obj}</li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <p>No hay objetivos disponibles.</p>
+                                )}
                             </ul>
                         </section>
 
@@ -84,10 +104,10 @@ export default function CoursesLanding({ course, isEnrolled, user }: CoursePageP
                             ))}
                         </section>
 
-                                        {/* Formulario de Dudas */}
+                        {/* Formulario de Dudas */}
                         <section id="dudas" className={`mt-8 section-container ${activeSection === 'dudas' ? 'block' : 'hidden'}`}>
                             <h2 className="text-xl font-semibold">Contacta con nosotros</h2>
-                                <ContactUs user={user} courses={[course]}/>
+                            <ContactUs user={user} courses={[course]} />
                         </section>
                     </div>
 
@@ -99,7 +119,6 @@ export default function CoursesLanding({ course, isEnrolled, user }: CoursePageP
                             className="w-full rounded-lg shadow-lg"
                         />
 
-
                         {isEnrolled ? (
                             <button onClick={handleAccess} className="btn-primary w-full py-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition duration-300">
                                 Acceder al Curso
@@ -107,7 +126,7 @@ export default function CoursesLanding({ course, isEnrolled, user }: CoursePageP
                         ) : (
                             <div>
                                 <p className="text-lg font-bold">
-                                    Precio: {(course.price && course.price > 0) ? `$${course.price.toFixed(2)}` : 'Gratis'}
+                                    Precio: {(typeof course.price === 'number' && course.price > 0) ? `$${course.price.toFixed(2)}` : 'Gratis'}
                                 </p>
                                 <button onClick={handleEnroll} className="btn-primary w-full py-3 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition duration-300">
                                     Inscribirse ahora
@@ -121,11 +140,8 @@ export default function CoursesLanding({ course, isEnrolled, user }: CoursePageP
                             <p className="font-semibold">Módulos:</p>
                             <p>{course.lessons.length} Módulos</p>
                         </div>
-
                     </div>
                 </div>
-
-
             </div>
         </AuthenticatedLayout>
     );

@@ -62,7 +62,6 @@ const CommentBox: React.FC<CommentBoxProps> = ({ lessonId, onCommentSubmit }) =>
       onCommentSubmit(); // Llamar al callback para actualizar los comentarios
       showNotification('success', 'Comentario enviado con éxito'); // Mostrar notificación de éxito
     } catch (error) {
-      console.error('Error enviando el comentario:', error);
       showNotification('error', 'Error enviando el comentario'); // Mostrar notificación de error
     }
   };

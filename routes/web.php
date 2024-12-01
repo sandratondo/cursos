@@ -75,6 +75,7 @@ Route::middleware(['role:student'])->group(function () {
 //inscripciones
 Route::middleware(['auth'])->group(function () {
     Route::get('/enrollments', [EnrollmentController::class, 'index'])->name('enrollments.index');
+    Route::post('/enroll', [EnrollmentController::class, 'enroll'])->name('enroll');
 });
 
 //lessons
