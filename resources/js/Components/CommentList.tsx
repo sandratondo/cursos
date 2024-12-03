@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import CommentReplyBox from './CommentReplyBox';
 
 interface Comment {
@@ -11,23 +12,42 @@ interface Comment {
     avatar: string;
   };
   replies?: Comment[];
+  parent_id?: number | null;
 }
 
 interface CommentListProps {
-  comments?: Comment[];
+  comments: Comment[];
   totalComments: number;
+  lessonId: number; // saber a qué lección pertenecen los comentarios
 }
 
-const CommentList: React.FC<CommentListProps> = ({ comments = [], totalComments }) => {
-  const [replyingTo, setReplyingTo] = useState<number | null>(null);
+const CommentList: React.FC<CommentListProps> = ({ comments, totalComments, lessonId }) => {
+  const [replyingTo, setReplyingTo] = useState<number | null>(null); //comentario al que esta respondiendo
+  const [commentList, setCommentList] = useState<Comment[]>(comments);
+
+  
+  useEffect(() => {
+    setCommentList(comments); // useEffect para actualizar la lista de comentarios cuando cambian las props
+  }, [comments]); //array [comments] indica que el efecto se ejecutará cada vez que comments cambie.
+
+  //para obtener comentarios
+  const fetchComments = async () => {
+    try {
+      const response = await axios.get(`/comments/${lessonId}`);
+      setCommentList(response.data.data);
+    } catch (error) {
+      console.error('Error fetching comments:', error);
+    }
+  };
 
   const handleReplyClick = (commentId: number) => {
     setReplyingTo(replyingTo === commentId ? null : commentId);
   };
 
+  //para manejar el envío de una respuesta
   const handleReplySubmit = () => {
-    // Aquí podrías agregar lógica para actualizar los comentarios después de una respuesta
-    setReplyingTo(null);
+    fetchComments(); //obtener los comentarios actualizados
+    setReplyingTo(null); //restablece replyingTo a null para ocultar la caja de respuesta
   };
 
   return (
@@ -35,8 +55,8 @@ const CommentList: React.FC<CommentListProps> = ({ comments = [], totalComments 
       <h2 id="comments-header" className="text-xl font-semibold my-4">
         {totalComments} Comentarios
       </h2>
-      {comments.length > 0 ? (
-        comments.map(comment => (
+      {commentList.length > 0 ? (
+        commentList.map(comment => (
           <div key={comment.id} className="flex items-start space-x-4">
             <div className="profile-pic flex-shrink-0">
               <img

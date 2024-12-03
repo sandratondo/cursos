@@ -43,6 +43,18 @@ export interface Enrollment {
     updated_at?: string | null; // timestamp, NULL permitido
 }
 
+export interface Comment {
+    id: number; // bigint(20), UNSIGNED
+    lesson_id: number; // bigint(20), UNSIGNED
+    user_id: number; // bigint(20), UNSIGNED
+    content: string; // texto del comentario
+    image?: Blob | null; // imagen opcional
+    is_answered: boolean; // campo para marcar si el comentario ha sido respondido
+    created_at?: string | null; // timestamp opcional
+    updated_at?: string | null; // timestamp opcional
+    parent_id?: number | null; // relación opcional con el comentario padre (nullable)
+}
+
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     auth: {

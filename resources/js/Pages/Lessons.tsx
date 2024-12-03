@@ -117,7 +117,7 @@ const Lessons: React.FC<LessonsPageProps> = ({ auth, course }) => {
           {selectedLessonId && (
             <div>
               <CommentBox lessonId={selectedLessonId} onCommentSubmit={handleCommentSubmit} />
-              <CommentList comments={comments} totalComments={totalComments} /> {/* Pasar totalComments */}
+              <CommentList comments={comments} totalComments={totalComments} lessonId={selectedLessonId} /> 
               <Pagination 
                 currentPage={currentPage}
                 totalPages={totalPages}
