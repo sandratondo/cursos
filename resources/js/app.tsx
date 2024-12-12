@@ -27,6 +27,7 @@ export function showNotification(type: 'success' | 'error' | 'warning', message:
         }
 
         notificationDiv.style.display = 'block';
+        notificationDiv.scrollIntoView({ behavior: 'smooth' });
         // Ocultar la notificación después de 5 segundos
         setTimeout(() => {
             notificationDiv.style.display = 'none';

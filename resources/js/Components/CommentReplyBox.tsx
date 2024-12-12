@@ -35,7 +35,6 @@ const CommentReplyBox: React.FC<CommentReplyBoxProps> = ({ parentCommentId, onRe
 
   const addEmoji = (emoji: string) => {
     setContent(content + emoji);
-    setEmojiPickerVisible(false);
   };
 
   const handleSubmit = async (event: FormEvent) => {

@@ -18,14 +18,14 @@ const ContactUs: React.FC<ContactUsProps> = ({ user, courses = [] }) => {
         e.preventDefault(); // prevents the default form submission behavior (reloading the page).
 
         try {
-            await axios.post('/contact', {
+            const response = await axios.post('/contact', {
                 name,
                 email,
                 message,
                 course_id: courseId,
             });
 
-            showNotification('success', 'Comentario enviado con éxito');
+            showNotification('success', response.data.message);
             setName(user ? user.name : '');
             setEmail(user ? user.email : '');
             setMessage('');

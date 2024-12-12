@@ -35,7 +35,6 @@ const CommentBox: React.FC<CommentBoxProps> = ({ lessonId, onCommentSubmit }) =>
 
   const addEmoji = (emoji: string) => {
     setContent(content + emoji);
-    setEmojiPickerVisible(false);
   };
 
   const handleSubmit = async (event: FormEvent) => {
