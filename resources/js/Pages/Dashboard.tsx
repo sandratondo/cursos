@@ -1,24 +1,35 @@
+
+
 // resources/js/Pages/Dashboard.tsx
-import { Head } from '@inertiajs/react';
-import AuthenticatedLayout from '../Layouts/AuthenticatedLayout' // Asegúrate de importar AuthenticatedLayout
-import { User, Course } from '@/types'; // Asegúrate de que las interfaces estén importadas
-import CourseList from '../Components/CourseList'; // Asegúrate de que la ruta sea correcta
+import React from 'react';
+import { Head, usePage } from '@inertiajs/react';
+import AuthenticatedLayout from '../Layouts/AuthenticatedLayout';
+import { User, Course } from '@/types';
+import AdminDashboard from '../Components/AdminDashboard';
+import InstructorDashboard from '../Components/InstructorDashboard';
+import StudentDashboard from '../Components/StudentDashboard';
+import CourseList from '@/Components/CourseList';
 
 interface DashboardProps {
     auth: {
-        user: User; // Usa la interfaz User aquí
+        user: User;
     };
-    courses: Course[]; // Asegúrate de que `Course` esté definido correctamente
+    courses: Course[];
 }
 
-export default function Dashboard({ auth, courses }: DashboardProps) {
+const Dashboard: React.FC<DashboardProps> = ({ auth, courses }) => {
+    const user = auth.user;
+
     return (
-        <AuthenticatedLayout user={auth.user}>
+        <AuthenticatedLayout user={user}>
             <Head title="Dashboard" />
             <div>
-                <h2>Mis Cursos sisiisi</h2>
-                <CourseList courses={courses} />
+                {user.role === 'admin' && <AdminDashboard courses={courses} />}
+                {user.role === 'instructor' && <InstructorDashboard courses={courses} />}
+                {user.role === 'student' && <CourseList courses={courses} />}
             </div>
         </AuthenticatedLayout>
     );
-}
+};
+
+export default Dashboard;

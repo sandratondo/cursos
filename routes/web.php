@@ -26,16 +26,19 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    $user = Auth::user(); // Utiliza el facade de Auth para obtener el usuario autenticado
 
-    return Inertia::render('Dashboard', [
-        'auth' => [
-            'user' => $user, // Pasa el usuario autenticado
-        ],
-        'courses' => Course::all(), // Obtén todos los cursos
-    ]);
-})->middleware(['auth', 'verified'])->name('dashboard');
+    Route::get('/dashboard', function () {
+        $user = Auth::user(); // Utiliza el facade de Auth para obtener el usuario autenticado
+
+        return Inertia::render('Dashboard', [
+            'auth' => [
+                'user' => $user, // Pasa el usuario autenticado
+            ],
+            'courses' => Course::all(), // Obtén todos los cursos
+        ]);
+    })->middleware(['auth', 'verified'])->name('dashboard');
+
+
 
 
 //rutas login
@@ -54,22 +57,22 @@ Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallba
 // Rutas para el administrador
 Route::middleware(['role:admin'])->group(function () {
     Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
-    });
+        return view('dashboard'); // React se encargará del rendering
+    })->name('admin.dashboard');
 });
 
 // Rutas para el instructor
 Route::middleware(['role:instructor'])->group(function () {
     Route::get('/instructor/dashboard', function () {
-        return view('instructor.dashboard');
-    });
+        return view('dashboard'); // React se encargará del rendering
+    })->name('instructor.dashboard');
 });
 
 // Rutas para el estudiante
 Route::middleware(['role:student'])->group(function () {
     Route::get('/student/dashboard', function () {
-        return view('student.dashboard');
-    });
+        return view('dashboard'); // React se encargará del rendering
+    })->name('student.dashboard');
 });
 
 //inscripciones
