@@ -41,4 +41,40 @@ class CourseController extends Controller
             'authUser' => auth()->user(), // Pasar datos del usuario autenticado
         ]);
     }
+
+    public function create()
+    {
+        return Inertia::render('Courses/Create');
+    }
+
+    public function store(Request $request)
+    {
+        $course = new Course();
+        $course->title = $request->title;
+        $course->description = $request->description;
+        $course->price = $request->price;
+        $course->is_free = $request->is_free;
+        $course->user_id = auth()->id();
+        $course->save();
+
+        return redirect()->route('instructor.dashboard');
+    }
+
+    public function edit(Course $course)
+    {
+        return Inertia::render('Courses/Edit', [
+            'course' => $course,
+        ]);
+    }
+
+    public function update(Request $request, Course $course)
+    {
+        $course->title = $request->title;
+        $course->description = $request->description;
+        $course->price = $request->price;
+        $course->is_free = $request->is_free;
+        $course->save();
+
+        return redirect()->route('instructor.dashboard');
+    }
 }

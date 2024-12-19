@@ -8,6 +8,9 @@ use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\InstructorDashboardController;
+use App\Http\Controllers\StudentDashboardController;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Controllers\VideoController;
 use Illuminate\Foundation\Application;
@@ -54,25 +57,22 @@ Route::post('register', [RegisterController::class, 'register']);
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
-// Rutas para el administrador
-Route::middleware(['role:admin'])->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return view('dashboard'); // React se encargará del rendering
-    })->name('admin.dashboard');
+// Rutas protegidas por autenticación y rol
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 });
 
-// Rutas para el instructor
-Route::middleware(['role:instructor'])->group(function () {
-    Route::get('/instructor/dashboard', function () {
-        return view('dashboard'); // React se encargará del rendering
-    })->name('instructor.dashboard');
+Route::middleware(['auth', 'role:instructor'])->group(function () {
+    Route::get('/instructor/dashboard', [InstructorDashboardController::class, 'index'])->name('instructor.dashboard');
+    Route::resource('courses', CourseController::class);
+    Route::get('/courses/create', [CourseController::class, 'create'])->name('courses.create');
+    Route::post('/courses', [CourseController::class, 'store'])->name('courses.store');
+    Route::get('/courses/{course}/edit', [CourseController::class, 'edit'])->name('courses.edit');
+    Route::put('/courses/{course}', [CourseController::class, 'update'])->name('courses.update');
 });
 
-// Rutas para el estudiante
-Route::middleware(['role:student'])->group(function () {
-    Route::get('/student/dashboard', function () {
-        return view('dashboard'); // React se encargará del rendering
-    })->name('student.dashboard');
+Route::middleware(['auth', 'role:student'])->group(function () {
+    Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])->name('student.dashboard');
 });
 
 //inscripciones

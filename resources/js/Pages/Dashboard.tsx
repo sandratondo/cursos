@@ -1,12 +1,9 @@
-
-
-// resources/js/Pages/Dashboard.tsx
 import React from 'react';
 import { Head, usePage } from '@inertiajs/react';
 import AuthenticatedLayout from '../Layouts/AuthenticatedLayout';
 import { User, Course } from '@/types';
 import AdminDashboard from '../Components/AdminDashboard';
-import InstructorDashboard from '../Components/InstructorDashboard';
+import InstructorDashboard from '@/Components/Instructor/InstructorDashboard';
 import StudentDashboard from '../Components/StudentDashboard';
 import CourseList from '@/Components/CourseList';
 
