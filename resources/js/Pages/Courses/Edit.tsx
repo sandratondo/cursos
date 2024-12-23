@@ -2,13 +2,19 @@
 import React, { useState } from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Course } from '@/types';
+import { Course, User } from '@/types';
 
 interface EditCourseProps {
+    auth: {
+        user: User;
+    };
     course: Course;
 }
 
-const EditCourse: React.FC<EditCourseProps> = ({ course }) => {
+const EditCourse: React.FC<EditCourseProps> = ({ course, auth }) => {
+
+    const user = auth.user;
+
     const { data, setData, put, errors } = useForm({
         title: course.title || '',
         description: course.description || '',
@@ -22,7 +28,7 @@ const EditCourse: React.FC<EditCourseProps> = ({ course }) => {
     };
 
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout user={user}>
             <Head title="Editar Curso" />
             <h1>Editar Curso</h1>
             <form onSubmit={handleSubmit}>

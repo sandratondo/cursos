@@ -1,9 +1,19 @@
 // resources/js/Pages/Courses/Create.tsx
-import React, { useState } from 'react';
+// resources/js/Pages/Courses/Create.tsx
+import React from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { User } from '@/types';
 
-const CreateCourse: React.FC = () => {
+interface CreateCourseProps {
+    auth: {
+        user: User;
+    };
+}
+
+const CreateCourse: React.FC<CreateCourseProps> = ({ auth }) => {
+    const user = auth.user;
+
     const { data, setData, post, errors } = useForm({
         title: '',
         description: '',
@@ -17,7 +27,7 @@ const CreateCourse: React.FC = () => {
     };
 
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout user={user}>
             <Head title="Crear Curso" />
             <h1>Crear Curso</h1>
             <form onSubmit={handleSubmit}>

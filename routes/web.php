@@ -62,7 +62,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 });
 
-Route::middleware(['auth', 'role:instructor'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/instructor/dashboard', [InstructorDashboardController::class, 'index'])->name('instructor.dashboard');
     Route::resource('courses', CourseController::class)->except(['show', 'create', 'store', 'edit', 'update']);
     Route::get('/courses/create', [CourseController::class, 'create'])->name('courses.create');

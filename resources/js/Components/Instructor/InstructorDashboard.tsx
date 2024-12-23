@@ -11,6 +11,7 @@ const InstructorDashboard: React.FC<InstructorDashboardProps> = ({ courses }) =>
     return (
         <div>
             <h1>Instructor Dashboard</h1>
+            <div id="notification" style={{display: 'none'}}></div>
             <div className="mb-4">
                 <a href="/courses/create" className="btn btn-success">Crear Curso</a>
             </div>

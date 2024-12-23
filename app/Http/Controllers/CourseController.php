@@ -57,7 +57,7 @@ class CourseController extends Controller
         $course->user_id = auth()->id();
         $course->save();
 
-        return redirect()->route('instructor.dashboard');
+        return redirect()->route('dashboard');
     }
 
     public function edit(Course $course)
@@ -75,6 +75,7 @@ class CourseController extends Controller
         $course->is_free = $request->is_free;
         $course->save();
 
-        return redirect()->route('instructor.dashboard');
+        return redirect()->route('dashboard')->with('message', 'Curso editado correctamente');
+        
     }
 }
