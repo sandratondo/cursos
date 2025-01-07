@@ -45,7 +45,7 @@ class CourseController extends Controller
 
     public function create()
     {
-        return Inertia::render('Courses/Create');
+        return Inertia::render('Courses/main');
     }
 
     public function store(Request $request)

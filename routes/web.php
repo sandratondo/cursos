@@ -11,6 +11,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\InstructorDashboardController;
 use App\Http\Controllers\StudentDashboardController;
+use App\Http\Controllers\ModuleController;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Controllers\VideoController;
 use Illuminate\Foundation\Application;
@@ -65,7 +66,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/instructor/dashboard', [InstructorDashboardController::class, 'index'])->name('instructor.dashboard');
     Route::resource('courses', CourseController::class)->except(['show', 'create', 'store', 'edit', 'update']);
-    Route::get('/courses/create', [CourseController::class, 'create'])->name('courses.create');
+    Route::get('/courses/main', [CourseController::class, 'create'])->name('courses.create');
     Route::post('/courses', [CourseController::class, 'store'])->name('courses.store');
     Route::get('/courses/{course}/edit', [CourseController::class, 'edit'])->name('courses.edit');
     Route::post('/courses/{course}', [CourseController::class, 'update'])->name('courses.update');
@@ -85,6 +86,11 @@ Route::middleware(['auth'])->group(function () {
 
 //lessons
 Route::middleware(['auth'])->group(function () {
+    Route::post('/lessons/{lessonId}/modules', [ModuleController::class, 'store'])->name('modules.store');
+    Route::get('/lessons/{lessonId}/modules', [ModuleController::class, 'getModules'])->name('modules.get');
+
+    Route::get('/courses/{course}/lessons/create', [LessonController::class, 'create'])->name('lessons.create');
+    Route::post('/courses/{course}/lessons', [LessonController::class, 'store'])->name('lessons.store');
     Route::get('/courses/{course}/lessons', [CourseController::class, 'showLessons'])->name('courses.lessons');
     Route::get('/courses/{id}', [CourseController::class, 'showCourse'])->name('courses.showCourse');
 });

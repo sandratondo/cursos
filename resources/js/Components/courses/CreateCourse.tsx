@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Head, useForm } from '@inertiajs/react';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { User } from '@/types';
 
 interface CreateCourseProps {
@@ -64,7 +63,7 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ auth }) => {
     };
 
     return (
-        <AuthenticatedLayout user={user}>
+            <div>
             <Head title="Crear Curso" />
             <h1>Crear Curso</h1>
             <form onSubmit={handleSubmit}>
@@ -150,7 +149,7 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ auth }) => {
                 </div>
                 <button type="submit">Crear</button>
             </form>
-        </AuthenticatedLayout>
+        </div>    
     );
 };
 

@@ -33,6 +33,18 @@ export interface Lesson {
     updated_at?: string | null; // timestamp, NULL permitido
 }
 
+export interface Module {
+    id: number;
+    lesson_id: number;
+    title: string;
+    type: 'video' | 'article' | 'quiz' | 'assignment';
+    url?: string | null;
+    description?: string | null;
+    order: number;
+    created_at?: string | null;
+    updated_at?: string | null;
+}
+
 
 export interface Enrollment {
     id: number; // bigint(20), UNSIGNED
