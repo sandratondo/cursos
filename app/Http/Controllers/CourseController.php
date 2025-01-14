@@ -76,7 +76,10 @@ class CourseController extends Controller
         }
         $course->save();
 
-        return redirect()->route('dashboard')->with('message', 'Curso creado correctamente');
+
+        return response()->json(['message' => 'Curso guardado correctamente'], 200);
+
+
     }
 
     public function edit(Course $course)

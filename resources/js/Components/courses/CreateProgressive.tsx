@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
-import { Head } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
+import { User } from '@/types';
 import axios from 'axios';
 import { showNotification } from '@/app';
-import { User } from '@/types';
+
 
 interface CreateCourseProps {
     auth: {
         user: User;
     };
+
 }
 
-const CreateCourse: React.FC<CreateCourseProps> = ({ auth }) => {
+const CreateCourse: React.FC<CreateCourseProps> = ({ auth}) => {
     const user = auth.user;
 
-    const [formData, setFormData] = useState({
+    const { data, setData, post, errors } = useForm({
         title: '',
         description: '',
         price: '',
@@ -23,22 +25,14 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ auth }) => {
         duracion: '',
     });
 
-    const [errors, setErrors] = useState<Record<string, string>>({});
+
     const [dragActive, setDragActive] = useState(false);
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { id, value, type } = e.target;
-        const checked = type === 'checkbox' ? (e.target as HTMLInputElement).checked : undefined;
-        setFormData({
-            ...formData,
-            [id]: type === 'checkbox' ? !!checked : value,
-        });
-    };
-    
+
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
-            setFormData({ ...formData, image: e.target.files[0] });
+            setData('image', e.target.files[0]);
         }
     };
 
@@ -57,56 +51,37 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ auth }) => {
         e.stopPropagation();
         setDragActive(false);
         if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-            setFormData({ ...formData, image: e.dataTransfer.files[0] });
+            setData('image', e.dataTransfer.files[0]);
         }
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        setErrors({});
-    
-        const data = new FormData();
-        data.append('title', formData.title);
-        data.append('description', formData.description);
-        data.append('price', formData.price);
-        data.append('is_free', formData.is_free ? '1' : '0'); // Envía como '1' o '0'
-        if (formData.image) {
-            data.append('image', formData.image);
-        }
-        data.append('objetivo', formData.objetivo);
-        data.append('duracion', formData.duracion);
-    
-        try {
-            const response = await axios.post('/courses', data, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            showNotification('success', response.data.message);
-            console.log(response.data);
-        } catch (error: any) {
-            if (error.response && error.response.data.errors) {
-                setErrors(error.response.data.errors);
-            } else {
-                showNotification('error', error.response?.data?.message || 'Ocurrió un error inesperado');
-            }
-        }
+        const formData = new FormData();
+        formData.append('title', data.title);
+        formData.append('description', data.description);
+        formData.append('price', data.price);
+        formData.append('is_free', String(data.is_free));
+        formData.append('image', data.image as File);
+        formData.append('objetivo', data.objetivo);
+        formData.append('duracion', data.duracion);
+
+        post(route('courses.store'), { data: formData });
     };
-    
+
 
     return (
-        <div>
+            <div>
             <Head title="Crear Curso" />
             <h1>Crear Curso</h1>
-            <div id="notification" style={{display: 'none'}}></div>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="title">Título</label>
                     <input
                         type="text"
                         id="title"
-                        value={formData.title}
-                        onChange={handleInputChange}
+                        value={data.title}
+                        onChange={(e) => setData('title', e.target.value)}
                     />
                     {errors.title && <div>{errors.title}</div>}
                 </div>
@@ -114,8 +89,8 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ auth }) => {
                     <label htmlFor="description">Descripción</label>
                     <textarea
                         id="description"
-                        value={formData.description}
-                        onChange={handleInputChange}
+                        value={data.description}
+                        onChange={(e) => setData('description', e.target.value)}
                     />
                     {errors.description && <div>{errors.description}</div>}
                 </div>
@@ -124,8 +99,8 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ auth }) => {
                     <input
                         type="text"
                         id="price"
-                        value={formData.price}
-                        onChange={handleInputChange}
+                        value={data.price}
+                        onChange={(e) => setData('price', e.target.value)}
                     />
                     {errors.price && <div>{errors.price}</div>}
                 </div>
@@ -134,17 +109,18 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ auth }) => {
                     <input
                         type="checkbox"
                         id="is_free"
-                        checked={formData.is_free}
-                        onChange={handleInputChange}
+                        checked={data.is_free}
+                        onChange={(e) => setData('is_free', e.target.checked)}
                     />
+                    {errors.is_free && <div>{errors.is_free}</div>}
                 </div>
                 <div>
                     <label htmlFor="objetivo">Objetivo</label>
                     <input
                         type="text"
                         id="objetivo"
-                        value={formData.objetivo}
-                        onChange={handleInputChange}
+                        value={data.objetivo}
+                        onChange={(e) => setData('objetivo', e.target.value)}
                     />
                     {errors.objetivo && <div>{errors.objetivo}</div>}
                 </div>
@@ -153,8 +129,8 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ auth }) => {
                     <input
                         type="text"
                         id="duracion"
-                        value={formData.duracion}
-                        onChange={handleInputChange}
+                        value={data.duracion}
+                        onChange={(e) => setData('duracion', e.target.value)}
                     />
                     {errors.duracion && <div>{errors.duracion}</div>}
                 </div>
@@ -172,8 +148,8 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ auth }) => {
                         className="hidden"
                     />
                     <label htmlFor="image" className="cursor-pointer">
-                        {formData.image ? (
-                            <p>Imagen seleccionada: {formData.image.name}</p>
+                        {data.image ? (
+                            <p>Imagen seleccionada: {(data.image as File).name}</p>
                         ) : (
                             <p>Arrastra y suelta una imagen aquí, o haz clic para seleccionar una.</p>
                         )}
@@ -181,7 +157,7 @@ const CreateCourse: React.FC<CreateCourseProps> = ({ auth }) => {
                 </div>
                 <button type="submit">Crear</button>
             </form>
-        </div>
+        </div>    
     );
 };
 

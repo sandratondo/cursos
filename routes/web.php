@@ -68,6 +68,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('courses', CourseController::class)->except(['show', 'create', 'store', 'edit', 'update']);
     Route::get('/courses/main', [CourseController::class, 'create'])->name('courses.create');
     Route::post('/courses', [CourseController::class, 'store'])->name('courses.store');
+
     Route::get('/courses/{course}/edit', [CourseController::class, 'edit'])->name('courses.edit');
     Route::post('/courses/{course}', [CourseController::class, 'update'])->name('courses.update');
     Route::delete('/courses/{course}', [CourseController::class, 'destroy'])->name('courses.destroy');
